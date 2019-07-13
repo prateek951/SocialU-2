@@ -53,7 +53,7 @@ router.post('/', [authMiddleware, validationChecks], async (req, res) => {
   // 1. Check for the errors
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(HTTP_STATUS_CODES.BAD_REQUEST).json({
+    return res.status(HTTP_STATUS_CODES.UNPROCESSABLE_ENTITY).json({
       errors: errors.array()
     });
   }
@@ -223,7 +223,7 @@ router.put(
     // 2. If there are validation errors, return errors as json response
     if (!errors.isEmpty()) {
       return res
-        .status(HTTP_STATUS_CODES.BAD_REQUEST)
+        .status(HTTP_STATUS_CODES.UNPROCESSABLE_ENTITY)
         .json({ errors: errors.array() });
     }
     // 3. If no errors, tap the data from request body
@@ -336,7 +336,7 @@ router.put(
     // 2. If there are validation errors, return errors as json response
     if (!errors.isEmpty()) {
       return res
-        .status(HTTP_STATUS_CODES.BAD_REQUEST)
+        .status(HTTP_STATUS_CODES.UNPROCESSABLE_ENTITY)
         .json({ errors: errors.array() });
     }
     // 3. If no errors, tap the data from request body
@@ -458,6 +458,5 @@ router.get('/github/:username', async (req, res) => {
     res.status(HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR).send('Server error');
   }
 });
-
 
 module.exports = router;
