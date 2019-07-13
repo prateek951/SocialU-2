@@ -174,30 +174,97 @@ router.get('/user/:user_id', async (req, res) => {
   }
 });
 
-
 /**
  * @route DELETE /api/profile
  * @desc Delete the profile, user pertaining to profile
- * @access Private 
+ * @access Private
  */
 
- router.delete('/', authMiddleware, (req, res) => { 
+router.delete('/', authMiddleware, async (req, res) => {
   try {
     // 1. Find the profile by the requested user id and remove the profile
     await Profile.findOneAndRemove({ user: req.user.id });
-    // 2. In order to remove the user 
+    // 2. In order to remove the user
     await User.findOneAndRemove({ _id: req.user.id });
-    // 3. Send success response 
-    res.status(HTTP_STATUS_CODES.OK).json({ msg: 'User Deleted'})
+    // 3. Send success response
+    res.status(HTTP_STATUS_CODES.OK).json({ msg: 'User Deleted' });
   } catch (error) {
     console.error(error);
     res.status(HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR).send('Server error');
   }
- })
+});
 
+/**
+ * @route PUT /api/profile/experience
+ * @desc Add profile experience
+ * @access Private
+ */
 
+const experienceValidationChecks = [
+  check('title', 'Title is required')
+    .not()
+    .isEmpty(),
+  check('company', 'Company is required')
+    .not()
+    .isEmpty(),
+  check('from', 'From date is required')
+    .not()
+    .isEmpty()
+];
 
-
-
+router.put(
+  '/experience',
+  [authMiddleware, experienceValidationChecks],
+  async (req, res) => {
+    // 1. Check for the validation errors
+    const errors = validationResult(req);
+    // 2. If there are validation errors, return errors as json response
+    if (!errors.isEmpty()) {
+      return res
+        .status(HTTP_STATUS_CODES.BAD_REQUEST)
+        .json({ errors: errors.array() });
+    }
+    // 3. If no errors, tap the data from request body
+    const {
+      title,
+      company,
+      location,
+      from,
+      to,
+      current,
+      description
+    } = req.body;
+    // 4. Create a new experience object
+    const newExperienceObj = {
+      title,
+      company,
+      location,
+      from,
+      to,
+      current,
+      description
+    };
+    try {
+      // 5. Fetch the profile for the requested user id
+      const profile = await Profile.findOne({ user: req.user.id });
+      // 5.5 If there is no profile pertaining to the requested user id
+      // return profile not found as the response
+      if (!profile) {
+        return res.status(HTTP_STATUS_CODES.BAD_REQUEST).json({
+          errors: [{ msg: 'Profile not found' }]
+        });
+      }
+      // 6. Add the profile experience for the fetched profile
+      profile.experience.unshift(newExperienceObj);
+      // 7. Commit the changes by saving the updated profile
+      await profile.save();
+      // 8. Send the success response with the whole profile
+      res.status(HTTP_STATUS_CODES.OK).json(profile);
+    } catch (error) {
+      console.error(error);
+      res.status(HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR).send('Server error');
+    }
+  }
+);
 
 module.exports = router;
