@@ -174,4 +174,247 @@ router.get('/user/:user_id', async (req, res) => {
   }
 });
 
+/**
+ * @route DELETE /api/profile
+ * @desc Delete the profile, user pertaining to profile
+ * @access Private
+ */
+
+router.delete('/', authMiddleware, async (req, res) => {
+  try {
+    // 1. Find the profile by the requested user id and remove the profile
+    await Profile.findOneAndRemove({ user: req.user.id });
+    // 2. In order to remove the user
+    await User.findOneAndRemove({ _id: req.user.id });
+    // 3. Send success response
+    res.status(HTTP_STATUS_CODES.OK).json({ msg: 'User Deleted' });
+  } catch (error) {
+    console.error(error);
+    res.status(HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR).send('Server error');
+  }
+});
+
+/**
+ * @route PUT /api/profile/experience
+ * @desc Add profile experience
+ * @access Private
+ */
+
+const experienceValidationChecks = [
+  check('title', 'Title is required')
+    .not()
+    .isEmpty(),
+  check('company', 'Company is required')
+    .not()
+    .isEmpty(),
+  check('from', 'From date is required')
+    .not()
+    .isEmpty()
+];
+
+router.put(
+  '/experience',
+  [authMiddleware, experienceValidationChecks],
+  async (req, res) => {
+    // 1. Check for the validation errors
+    const errors = validationResult(req);
+    // 2. If there are validation errors, return errors as json response
+    if (!errors.isEmpty()) {
+      return res
+        .status(HTTP_STATUS_CODES.BAD_REQUEST)
+        .json({ errors: errors.array() });
+    }
+    // 3. If no errors, tap the data from request body
+    const {
+      title,
+      company,
+      location,
+      from,
+      to,
+      current,
+      description
+    } = req.body;
+    // 4. Create a new experience object
+    const newExperienceObj = {
+      title,
+      company,
+      location,
+      from,
+      to,
+      current,
+      description
+    };
+    try {
+      // 5. Fetch the profile for the requested user id
+      const profile = await Profile.findOne({ user: req.user.id });
+      // 5.5 If there is no profile pertaining to the requested user id
+      // return profile not found as the response
+      if (!profile) {
+        return res.status(HTTP_STATUS_CODES.BAD_REQUEST).json({
+          msg: 'Profile not found'
+        });
+      }
+      // 6. Add the profile experience for the fetched profile
+      profile.experience.unshift(newExperienceObj);
+      // 7. Commit the changes by saving the updated profile
+      await profile.save();
+      // 8. Send the success response with the whole profile
+      res.status(HTTP_STATUS_CODES.OK).json(profile);
+    } catch (error) {
+      console.error(error);
+      res.status(HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR).send('Server error');
+    }
+  }
+);
+
+/**
+ * @route DELETE /api/profile/experience/:exp_id
+ * @desc Delete the experience from profile
+ * @access Private
+ */
+
+router.delete('/experience/:exp_id', authMiddleware, async (req, res) => {
+  // 1. Retrieve the experienceId from the request parameters
+  const { exp_id: experienceId } = req.params;
+
+  try {
+    // 2. First fetch the profile pertaining to the requested user
+    const profile = await Profile.findOne({ user: req.user.id });
+    // 3. If the profile does not exists corresponding to this requested user
+    // return bad request as response
+    if (!profile) {
+      return res.status(HTTP_STATUS_CODES.BAD_REQUEST).json({
+        msg: 'Profile Not Found'
+      });
+    }
+    // 4. If there is one such profile, then delete the experience corresponding
+    // to experience id
+    const indexOfExperienceToRemove = profile.experience
+      .map(experienceItem => experienceItem.id)
+      .indexOf(experienceId);
+    // 5. Splice out that experience from the experiences of the profile
+    profile.experience.splice(indexOfExperienceToRemove, 1);
+    // 6. Commit the changes and save the profile
+    await profile.save();
+    // 7. Send the success response for successful deletion
+    res.status(HTTP_STATUS_CODES.OK).json(profile);
+  } catch (error) {
+    console.error(error.message);
+    res.status(HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR).send('Server error');
+  }
+});
+
+/**
+ * @route PUT /api/profile/education
+ * @desc Add profile education 
+ * @access Private
+ */
+
+const educationValidationChecks = [
+  check('school', 'School is required'0)
+    .not()
+    .isEmpty(),
+  check('degree', 'Degree is required')
+    .not()
+    .isEmpty(),
+  check('fieldOfStudy', 'Field of Study is required')
+    .not()
+    .isEmpty(),
+  check('from', 'From Date is required')
+    .not()
+    .isEmpty()
+];
+
+router.put(
+  '/education',
+  [authMiddleware, educationValidationChecks],
+  async (req, res) => {
+    // 1. Check for the validation errors
+    const errors = validationResult(req);
+    // 2. If there are validation errors, return errors as json response
+    if (!errors.isEmpty()) {
+      return res
+        .status(HTTP_STATUS_CODES.BAD_REQUEST)
+        .json({ errors: errors.array() });
+    }
+    // 3. If no errors, tap the data from request body
+    const {
+      school,
+      degree,
+      fieldOfStudy,
+      from,
+      to,
+      current,
+      description
+    } = req.body;
+    // 4. Create a new education object
+    const newEducationObj = {
+      school,
+      degree,
+      fieldOfStudy,
+      from,
+      to,
+      current,
+      description
+    };
+    try {
+      // 5. Fetch the profile for the requested user id
+      const profile = await Profile.findOne({ user: req.user.id });
+      // 5.5 If there is no profile pertaining to the requested user id
+      // return profile not found as the response
+      if (!profile) {
+        return res.status(HTTP_STATUS_CODES.BAD_REQUEST).json({
+          msg: 'Profile not found'
+        });
+      }
+      // 6. Add the profile education  for the fetched profile
+      profile.experience.unshift(newEducationObj);
+      // 7. Commit the changes by saving the updated profile
+      await profile.save();
+      // 8. Send the success response with the whole profile
+      res.status(HTTP_STATUS_CODES.OK).json(profile);
+    } catch (error) {
+      console.error(error);
+      res.status(HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR).send('Server error');
+    }
+  }
+);
+
+/**
+ * @route DELETE /api/profile/education/:edu_id
+ * @desc Delete the education from the profile
+ * @access Private
+ */
+
+router.delete('/education/:edu_id', authMiddleware, async (req, res) => {
+  // 1. Retrieve the experienceId from the request parameters
+  const { edu_id: educationId } = req.params;
+
+  try {
+    // 2. First fetch the profile pertaining to the requested user
+    const profile = await Profile.findOne({ user: req.user.id });
+    // 3. If the profile does not exists corresponding to this requested user
+    // return profile not found as response
+    if (!profile) {
+      return res.status(HTTP_STATUS_CODES.BAD_REQUEST).json({
+        msg: 'Profile Not Found'
+      });
+    }
+    // 4. If there is one such profile, then delete the education corresponding
+    // to experience id
+    const indexOfEducationToRemove = profile.education
+      .map(educationItem => educationItem.id)
+      .indexOf(educationId);
+    // 5. Splice out that educationItem from the education of the profile
+    profile.education.splice(indexOfEducationToRemove,1);
+    // 6. Commit the changes and save the profile
+    await profile.save();
+    // 7. Send the success response for successful deletion
+    res.status(HTTP_STATUS_CODES.OK).json(profile);
+  } catch (error) {
+    console.error(error.message);
+    res.status(HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR).send('Server error');
+  }
+});
+
 module.exports = router;
