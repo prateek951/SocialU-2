@@ -9,6 +9,9 @@ app.get('/', (req, res) => {
   res.send('API Running');
 });
 
+// body parser middleware
+app.use(express.json({ extended: false }));
+
 //define the routes
 app.use('/api/users', require('./routes/api/users'));
 app.use('/api/auth', require('./routes/api/auth'));
