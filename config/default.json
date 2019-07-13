@@ -1,3 +1,4 @@
 {
-  "MONGO_URI": "mongodb+srv://prateek951:prateek951@social-3jbtm.mongodb.net/test?retryWrites=true&w=majority"
+  "MONGO_URI": "mongodb+srv://prateek951:prateek951@social-3jbtm.mongodb.net/test?retryWrites=true&w=majority",
+  "JWT_SECRET": "prateek951"
 }

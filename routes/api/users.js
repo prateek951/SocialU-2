@@ -2,6 +2,7 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const gravatar = require('gravatar');
 const jsonwebtoken = require('jsonwebtoken');
+const config = require('config');
 const User = require('../../models/User');
 const router = express.Router();
 const HTTP_STATUS_CODES = require('http-status-codes');
@@ -66,7 +67,23 @@ router.post('/', validationChecks, async (req, res) => {
     await user.save();
     // 8. Generate a JWT and send it as a response so the user
     // can immediately login
-    res.status(HTTP_STATUS_CODES.OK).send('user registered');
+    const payload = {
+      user: {
+        id: user.id
+      }
+    };
+    jsonwebtoken.sign(
+      payload,
+      config.get('JWT_SECRET'),
+      {
+        expiresIn: 360000
+      },
+      (error, token) => {
+        if (error) throw error;
+        res.json({ token });
+      }
+    );
+    // res.status(HTTP_STATUS_CODES.OK).send('user registered');
   } catch (error) {
     console.error(error.message);
     res.status(HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR).send('Server error');
