@@ -251,7 +251,7 @@ router.put(
       // return profile not found as the response
       if (!profile) {
         return res.status(HTTP_STATUS_CODES.BAD_REQUEST).json({
-          errors: [{ msg: 'Profile not found' }]
+          msg: 'Profile not found'
         });
       }
       // 6. Add the profile experience for the fetched profile
@@ -266,5 +266,42 @@ router.put(
     }
   }
 );
+
+/**
+ * @route DELETE /api/profile/experience/:exp_id
+ * @desc Delete the experience from profile
+ * @access Private
+ */
+
+router.delete('/experience/:exp_id', authMiddleware, async (req, res) => {
+  // 1. Retrieve the experienceId from the request parameters
+  const { exp_id: experienceId } = req.params;
+
+  try {
+    // 2. First fetch the profile pertaining to the requested user
+    const profile = await Profile.findOne({ user: req.user.id });
+    // 3. If the profile does not exists corresponding to this requested user
+    // return bad request as response
+    if (!profile) {
+      return res.status(HTTP_STATUS_CODES.BAD_REQUEST).json({
+        msg: 'Profile Not Found'
+      });
+    }
+    // 4. If there is one such profile, then delete the experience corresponding
+    // to experience id
+    const indexOfExperienceToRemove = profile.experience
+      .map(experience => experience.id)
+      .indexOf(experienceId);
+    // 5. Splice out that experience from the experiences of the profile
+    profile.experience.splice(indexOfExperienceToRemove, 1);
+    // 6. Commit the changes and save the profile
+    await profile.save();
+    // 7. Send the success response for successful deletion
+    res.status(HTTP_STATUS_CODES.OK).json(profile);
+  } catch (error) {
+    console.error(error.message);
+    res.status(HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR).send('Server error');
+  }
+});
 
 module.exports = router;
