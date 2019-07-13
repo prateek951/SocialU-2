@@ -1,4 +1,6 @@
 const express = require('express');
+const request = require('request');
+const config = require('config');
 const router = express.Router();
 const Profile = require('../../models/Profile');
 const User = require('../../models/User');
@@ -306,12 +308,12 @@ router.delete('/experience/:exp_id', authMiddleware, async (req, res) => {
 
 /**
  * @route PUT /api/profile/education
- * @desc Add profile education 
+ * @desc Add profile education
  * @access Private
  */
 
 const educationValidationChecks = [
-  check('school', 'School is required'0)
+  check('school', 'School is required')
     .not()
     .isEmpty(),
   check('degree', 'Degree is required')
@@ -406,13 +408,53 @@ router.delete('/education/:edu_id', authMiddleware, async (req, res) => {
       .map(educationItem => educationItem.id)
       .indexOf(educationId);
     // 5. Splice out that educationItem from the education of the profile
-    profile.education.splice(indexOfEducationToRemove,1);
+    profile.education.splice(indexOfEducationToRemove, 1);
     // 6. Commit the changes and save the profile
     await profile.save();
     // 7. Send the success response for successful deletion
     res.status(HTTP_STATUS_CODES.OK).json(profile);
   } catch (error) {
     console.error(error.message);
+    res.status(HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR).send('Server error');
+  }
+});
+
+/**
+ * @route GET /api/profile/github/:username
+ * @desc Get the repositories pertaining to a user
+ * @access Public
+ */
+
+router.get('/github/:username', async (req, res) => {
+  // 1. Pull out the username from the request parameters
+  const { username } = req.params;
+  try {
+    // 2. Create the request options object
+    const requestOptions = {
+      uri: `https://api.github.com/users/${username}/repos?per_page=5&sort=created:asc&client_id=${config.get(
+        'GITHUB_CLIENT_ID'
+      )}&client_secret=${config.get('GITHUB_CLIENT_SECRET')}`,
+      method: 'GET',
+      headers: {
+        'user-agent': 'node.js'
+      }
+    };
+    // 3. Make the request to the github api
+    request(requestOptions, (error, response, body) => {
+      // 4. Check for error
+      if (error) {
+        console.error(error);
+      }
+      // 5. If the response status code is not success, send the json response of not found
+      if (response.statusCode !== HTTP_STATUS_CODES.OK) {
+        res
+          .status(HTTP_STATUS_CODES.NOT_FOUND)
+          .json({ msg: 'No Github Profile Found' });
+      }
+      res.status(HTTP_STATUS_CODES.OK).json(JSON.parse(body));
+    });
+  } catch (error) {
+    console.error(error);
     res.status(HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR).send('Server error');
   }
 });
