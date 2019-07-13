@@ -290,7 +290,7 @@ router.delete('/experience/:exp_id', authMiddleware, async (req, res) => {
     // 4. If there is one such profile, then delete the experience corresponding
     // to experience id
     const indexOfExperienceToRemove = profile.experience
-      .map(experience => experience.id)
+      .map(experienceItem => experienceItem.id)
       .indexOf(experienceId);
     // 5. Splice out that experience from the experiences of the profile
     profile.experience.splice(indexOfExperienceToRemove, 1);
