@@ -8,7 +8,7 @@ const { check, validationResult } = require('express-validator');
 /**
  * @route GET /api/profile/me
  * @desc Get the currently authenticated user's profile
- * @access Public
+ * @access Private
  */
 
 router.get('/me', authMiddleware, async (req, res) => {
@@ -36,7 +36,7 @@ router.get('/me', authMiddleware, async (req, res) => {
 /**
  * @route POST /api/profile
  * @desc Create or update the user profile
- * @access Public
+ * @access Private
  */
 const validationChecks = [
   check('status', 'Status is required')
@@ -119,6 +119,27 @@ router.post('/', [authMiddleware, validationChecks], async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR).send('Server error');
+  }
+});
+
+/**
+ * @route GET /api/profile/all
+ * @desc Retrieve all the profiles
+ * @access Public
+ */
+router.get('/all', async (req, res) => {
+  try {
+    // 1. Query for all the profiles and for each profile populate
+    // the name and the avatar from the user
+    const profiles = await Profile.find({}).populate('user', [
+      'name',
+      'avatar'
+    ]);
+    // 2. Return the profiles as json response
+    res.status(HTTP_STATUS_CODES.OK).json(profiles);
+  } catch (error) {
+    console.error(error);
+    res.status(HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR).send('Server Error');
   }
 });
 
