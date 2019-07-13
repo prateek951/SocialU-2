@@ -143,4 +143,35 @@ router.get('/all', async (req, res) => {
   }
 });
 
+/**
+ * @route GET /api/profile/user/:user_id
+ * @desc Get the profile by the userId
+ * @access Public
+ */
+router.get('/user/:user_id', async (req, res) => {
+  try {
+    // 1. Query for the profile pertaining to the requested userid
+    const profile = await Profile.findOne({
+      user: req.params.user_id
+    }).populate('user', ['name', 'avatar']);
+
+    // 2. Check for the existence of the profile
+    if (!profile) {
+      return res.status(HTTP_STATUS_CODES.BAD_REQUEST).json({
+        msg: 'Profile not found.'
+      });
+    }
+    // 2. Return the profile as json response
+    res.status(HTTP_STATUS_CODES.OK).json(profile);
+  } catch (error) {
+    console.error(error);
+    if (error.kind === 'ObjectId') {
+      return res.status(HTTP_STATUS_CODES.BAD_REQUEST).json({
+        msg: 'Profile not found'
+      });
+    }
+    res.status(HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR).send('Server Error');
+  }
+});
+
 module.exports = router;
