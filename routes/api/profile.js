@@ -447,7 +447,7 @@ router.get('/github/:username', async (req, res) => {
       }
       // 5. If the response status code is not success, send the json response of not found
       if (response.statusCode !== HTTP_STATUS_CODES.OK) {
-        res
+        return res
           .status(HTTP_STATUS_CODES.NOT_FOUND)
           .json({ msg: 'No Github Profile Found' });
       }
