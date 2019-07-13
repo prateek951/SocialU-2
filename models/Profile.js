@@ -8,7 +8,7 @@ const { Schema, model } = require('mongoose');
 const ProfileSchema = new Schema({
   user: {
     type: Schema.Types.ObjectId,
-    ref: 'user'
+    ref: 'users'
   },
   company: {
     type: String

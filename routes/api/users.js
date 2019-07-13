@@ -27,7 +27,7 @@ router.post('/', validationChecks, async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res
-      .status(HTTP_STATUS_CODES.BAD_REQUEST)
+      .status(HTTP_STATUS_CODES.UNPROCESSABLE_ENTITY)
       .json({ errors: errors.array() });
   }
   // Check for the user existence
