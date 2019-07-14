@@ -1,4 +1,4 @@
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 
 const StyledForm = styled.form`
   box-shadow: 0 0 5px 3px rgba(0, 0, 0, 0.05);
@@ -33,6 +33,10 @@ const StyledForm = styled.form`
     font-size: 2rem;
     font-weight: 600;
     padding: 0.5rem 1.2rem;
+  }
+  span {
+    font-size: 20px;
+    color: #d3d3d3;
   }
   fieldset {
     border: 0;
