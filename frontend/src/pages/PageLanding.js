@@ -1,6 +1,6 @@
 import React from 'react';
 
-const AppLanding = () => {
+const PageLanding = () => {
   return (
     <div>
       <section className="landing">
@@ -26,4 +26,4 @@ const AppLanding = () => {
   );
 };
 
-export default AppLanding;
+export default PageLanding;

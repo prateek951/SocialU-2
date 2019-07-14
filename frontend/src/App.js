@@ -1,13 +1,16 @@
 import React, { Fragment } from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+
 import './App.css';
 import AppNavbar from './components/layout/AppNavbar';
-import AppLanding from './components/layout/AppLanding';
-
+import PageLanding from './pages/PageLanding';
 const App = () => (
-  <Fragment className="App">
-    <AppNavbar />
-    <AppLanding />
-  </Fragment>
+  <Router>
+    <Fragment className="App">
+      <AppNavbar />
+      <Route exact path="/" component={PageLanding} />
+    </Fragment>
+  </Router>
 );
 
 export default App;
