@@ -6,7 +6,7 @@ import NavStyles from '../../styles/NavStyles';
 const guestRoutes = () => {
   return (
     <Fragment>
-      <Link to="/developers">
+      <Link to="/profiles">
         <li>Developers</li>
       </Link>
       <Link to="/register">

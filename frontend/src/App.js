@@ -11,11 +11,13 @@ import PageLogin from './pages/auth/PageLogin';
 
 const App = () => (
   <Router>
-    <Fragment className="App">
+    <Fragment>
       <AppNavbar />
       <Route exact path="/" component={PageLanding} />
-      <Route exact path="/register" component={PageRegister} />
-      <Route exact path="/login" component={PageLogin} />
+      <section className="container">
+        <Route exact path="/register" component={PageRegister} />
+        <Route exact path="/login" component={PageLogin} />
+      </section>
     </Fragment>
   </Router>
 );
