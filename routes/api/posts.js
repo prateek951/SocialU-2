@@ -187,4 +187,52 @@ router.put('/like/:id', authMiddleware, async (req, res) => {
   }
 });
 
+/**
+ * @route PUT /api/posts/unlike/:postId
+ * @desc Unlike a specific post
+ * @access Private
+ */
+
+router.put('/unlike/:id', authMiddleware, async (req, res) => {
+  // 1. Pull out the post id from the request parameters
+  const { id: postId } = req.params;
+  try {
+    // 2. First fetch the post pertaining to the postId
+    const post = await Post.findById(postId);
+    // 3. If there is no post pertaining to this postId, return
+    // post not found as json response
+    if (!post) {
+      return res.status(HTTP_STATUS_CODES.NOT_FOUND).json({
+        msg: 'Post Not Found'
+      });
+    }
+    // 4. If there is a post pertaining to this postId,
+    // then check whether this post has already been liked by
+    // this user
+    const isAlreadyLiked =
+      post.likes.filter(like => like.user.toString() === req.user.id).length >
+      0;
+    if (isAlreadyLiked) {
+      // 5. If the post has already been liked by the user only then he can unlike the post
+      const indexOfLikeToUnlike = post.likes.findIndex(
+        like => like.user.toString() === req.user.id
+      );
+      // 6. Splice out the like from the likes array 
+      post.likes.splice(indexOfLikeToUnlike, 1);
+      // 7. Commit the changes and save the post
+      await post.save();
+      // 8. Send the response with the post likes
+      res.status(HTTP_STATUS_CODES.OK).json(post.likes);
+    } else {
+      // 9. If the post has not been liked you cannot unlike bad request operation 
+      return res.status(HTTP_STATUS_CODES.BAD_REQUEST).json({
+        msg: 'Post has not yet been liked'
+      });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR).send('Server error');
+  }
+});
+
 module.exports = router;
