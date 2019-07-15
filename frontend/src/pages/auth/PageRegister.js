@@ -4,7 +4,7 @@
  */
 
 import React, { useState } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 import StyledForm from '../../styles/FormStyles';
 import { Link } from 'react-router-dom';
 // import ErrorMessage from './ErrorMessage';
@@ -29,42 +29,17 @@ const PageRegister = () => {
       console.log('Passwords do not match');
     } else {
       console.log(formData);
-      // 2. Create a new user object
-      const newUser = {
-        name,
-        email,
-        password
-      };
-      try {
-        // 3. Create the config object with headers
-        const config = {
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        };
-        // 4. Create the body to send
-        const body = JSON.stringify(newUser);
-        // 5. Hit the backend with the body json and the config 
-        const { data: registeredUser } = await axios.post(
-          '/api/users',
-          body,
-          config
-        );
-        console.log(registeredUser);
-      } catch (error) {
-        console.error(error.response.data);
-      }
     }
   };
 
   return (
     <StyledForm className="form" onSubmit={handleRegister}>
       <fieldset>
-        <h2>
-          <i class="fas fa-user" /> Create Your Account
+        <h2 className="large text-primary">
+          <i className="fas fa-user" /> Create Your Account
         </h2>
         {/* <ErrorMessage error={this.state.error} /> */}
-        <label htmlFor="email">
+        <label htmlFor="name">
           Name
           <input
             type="text"
@@ -75,7 +50,7 @@ const PageRegister = () => {
             required
           />
         </label>
-        <label htmlFor="name">
+        <label htmlFor="email">
           Email Address
           <input
             type="email"
@@ -101,7 +76,7 @@ const PageRegister = () => {
             required
           />
         </label>
-        <label htmlFor="password">
+        <label htmlFor="confirmPassword">
           Confirm Password
           <input
             type="password"
@@ -114,9 +89,9 @@ const PageRegister = () => {
         </label>
         <button type="submit">Register</button>
         <br />
-        <span>
+        <p className="my-1">
           Already have an account ? <Link to="/login">Login</Link>
-        </span>
+        </p>
       </fieldset>
     </StyledForm>
   );
