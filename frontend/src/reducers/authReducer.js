@@ -4,7 +4,8 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAILURE,
   USER_LOADED,
-  AUTH_ERROR
+  AUTH_ERROR,
+  LOGOUT_USER
 } from '../actions/types';
 
 // 1. Create the initial state for the auth state
@@ -44,6 +45,7 @@ export default (state = initialState, { type, payload }) => {
     case REGISTRATION_FAILURE:
     case AUTH_ERROR:
     case LOGIN_FAILURE:
+    case LOGOUT_USER:
       // 1. Remove the token from the local storage
       localStorage.removeItem('token');
       // 2. Clear everything out
