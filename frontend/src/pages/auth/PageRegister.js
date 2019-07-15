@@ -6,7 +6,7 @@
 import React, { useState } from 'react';
 // import axios from 'axios';
 import StyledForm from '../../styles/FormStyles';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 // Actions
 import { setAlert } from '../../actions/alertAction';
@@ -28,7 +28,7 @@ const PageRegister = props => {
   const { name, email, password, confirmPassword } = formData;
 
   // Pull out the action from the props
-  const { setAlert, registerUser } = props;
+  const { setAlert, registerUser, isAuthenticated } = props;
 
   const handleChange = event =>
     setFormData({ ...formData, [event.target.name]: event.target.value });
@@ -45,6 +45,11 @@ const PageRegister = props => {
       registerUser({ name, email, password });
     }
   };
+
+  // If authenticated, redirect to the dashboard (home page)
+  if (isAuthenticated) {
+    return <Redirect to="/dashboard" />;
+  }
 
   return (
     <StyledForm className="form" onSubmit={handleRegister}>
@@ -109,10 +114,15 @@ const PageRegister = props => {
 
 PageRegister.propTypes = {
   setAlert: PropTypes.func.isRequired,
-  registerUser: PropTypes.func.isRequired
+  registerUser: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool
 };
 
+const mapStateToProps = (state, ownProps) => ({
+  isAuthenticated: state.authReducer.isAuthenticated
+});
+
 export default connect(
-  null,
+  mapStateToProps,
   { setAlert, registerUser }
 )(PageRegister);

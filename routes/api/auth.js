@@ -41,7 +41,7 @@ router.post('/', validationChecks, async (req, res) => {
       .status(HTTP_STATUS_CODES.BAD_REQUEST)
       .json({ errors: errors.array() });
   }
-  // Pull out the email and password from the body of the request
+  // Pull out the email and password from the blody of the request
   const { email, password } = req.body;
 
   try {

@@ -4,12 +4,15 @@
  */
 
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import StyledForm from '../../styles/FormStyles';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { loginUser } from '../../actions/authActions';
 // import ErrorMessage from "./ErrorMessage";
 // import isEmpty from "../validation/is-empty";
 
-const PageLogin = () => {
+const PageLogin = props => {
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -17,13 +20,23 @@ const PageLogin = () => {
   // Pull out the email and the password from the input form data
   const { email, password } = formData;
 
+  // Pull out the login user action from the props
+  const { loginUser, isAuthenticated } = props;
+
   const handleChange = event => {
     setFormData({ ...setFormData, [event.target.name]: event.target.value });
   };
   const handleLogin = event => {
     event.preventDefault();
-    console.log('handleLogin handler triggered');
+    loginUser(email, password);
   };
+
+  // Redirect to the main page if you are authenticated
+
+  if (isAuthenticated) {
+    return <Redirect to="/dashboard" />;
+  }
+
   return (
     <StyledForm method="POST" onSubmit={handleLogin}>
       <fieldset>
@@ -61,4 +74,18 @@ const PageLogin = () => {
   );
 };
 
-export default PageLogin;
+PageLogin.propTypes = {
+  loginUser: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool
+};
+
+const mapStateToProps = (state, ownProps) => {
+  return {
+    isAuthenticated: state.authReducer.isAuthenticated
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  { loginUser }
+)(PageLogin);

@@ -7,7 +7,9 @@ import {
   REGISTRATION_SUCCESS,
   REGISTRATION_FAILURE,
   USER_LOADED,
-  AUTH_ERROR
+  AUTH_ERROR,
+  LOGIN_SUCCESS,
+  LOGIN_FAILURE
 } from './types';
 import axios from 'axios';
 import { setAlert } from './alertAction';
@@ -35,7 +37,7 @@ export const loadUser = () => async (dispatch, getState) => {
     dispatch({
       type: USER_LOADED,
       payload: user
-    }); 
+    });
   } catch (error) {
     dispatch({
       type: AUTH_ERROR
@@ -75,6 +77,9 @@ export const registerUser = ({ name, email, password }) => async (
       type: REGISTRATION_SUCCESS,
       payload: registeredUser
     });
+
+    // 5. Once the registration is done dispatch the load user00 action
+    dispatch(loadUser());
   } catch (error) {
     const errors = error.response.data.errors;
     if (errors) {
@@ -87,6 +92,50 @@ export const registerUser = ({ name, email, password }) => async (
     // the registeredUser as the payload
     dispatch({
       type: REGISTRATION_FAILURE
+    });
+  }
+};
+
+/**
+ * @desc Login the user
+ * @param {Payload} payload: { email, password }
+ * @returns {Object} Dispatches an success or failure action based on successful login or not
+ */
+
+export const loginUser = (email, password) => async (dispatch, getState) => {
+  // 1. Hit the backend with the config and the data
+  const config = {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  };
+  // 2. Create the body of the formData that is to be sent
+  const body = JSON.stringify({ email, password });
+
+  try {
+    // 3. Make the request to the backend to register the new user
+    const response = await axios.post('/api/auth', body, config);
+    // 4. Dispatch the Registration Success action along with
+    // the registeredUser as the payload
+    dispatch({
+      type: LOGIN_SUCCESS,
+      payload: response.data
+    });
+
+    // 5. Once the registration is done dispatch the load user00 action
+    dispatch(loadUser());
+  } catch (error) {
+    const errors = error.response.data.errors;
+    if (errors) {
+      errors.forEach(error => {
+        dispatch(setAlert(error.msg, 'danger'));
+      });
+    }
+    console.error(error);
+    // 4. Dispatch the Registration Success action along with
+    // the registeredUser as the payload
+    dispatch({
+      type: LOGIN_FAILURE
     });
   }
 };
