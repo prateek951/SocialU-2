@@ -1,4 +1,9 @@
-import { REGISTRATION_SUCCESS, REGISTRATION_FAILURE } from '../actions/types';
+import {
+  REGISTRATION_SUCCESS,
+  REGISTRATION_FAILURE,
+  USER_LOADED,
+  AUTH_ERROR
+} from '../actions/types';
 
 // 1. Create the initial state for the auth state
 const initialState = {
@@ -17,6 +22,13 @@ const initialState = {
  */
 export default (state = initialState, { type, payload }) => {
   switch (type) {
+    case USER_LOADED:
+      return {
+        ...state,
+        isAuthenticated: true,
+        loading: false,
+        user: payload
+      };
     case REGISTRATION_SUCCESS:
       // 1. Set the token inside the localStorage
       localStorage.setItem('token', payload.token);
@@ -27,8 +39,10 @@ export default (state = initialState, { type, payload }) => {
         loading: false
       };
     case REGISTRATION_FAILURE:
+    case AUTH_ERROR:
       // 1. Remove the token from the local storage
       localStorage.removeItem('token');
+      // 2. Clear everything out 
       return {
         ...state,
         token: null,

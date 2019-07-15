@@ -3,9 +3,52 @@
  * @returns {Object} An Action
  */
 
-import { REGISTRATION_SUCCESS, REGISTRATION_FAILURE } from './types';
+import {
+  REGISTRATION_SUCCESS,
+  REGISTRATION_FAILURE,
+  USER_LOADED,
+  AUTH_ERROR
+} from './types';
 import axios from 'axios';
 import { setAlert } from './alertAction';
+import { setAuthToken } from '../utils/setAuthToken';
+
+/**
+ * @desc Load the user
+ * @param {Payload} payload
+ * @returns {Object} An Action
+ */
+
+export const loadUser = () => async (dispatch, getState) => {
+  // 1. Check whether there is a token in the local storage
+
+  if (localStorage.token) {
+    // 2. If we have the token in the local storage,
+    // set the token in the global headers s
+    setAuthToken(localStorage.token);
+  }
+
+  try {
+    // 3. Get the loaded user
+    const { data: user } = await axios.get('/api/auth');
+    // 4. Dispatch the user loaded action
+    dispatch({
+      type: USER_LOADED,
+      payload: user
+    }); 
+  } catch (error) {
+    dispatch({
+      type: AUTH_ERROR
+    });
+  }
+};
+
+/**
+ * @desc Register a new user
+ * @param {Payload} payload: { name, email, password }
+ * @returns {Object} Dispatches an success or failure action based on registration
+ */
+
 export const registerUser = ({ name, email, password }) => async (
   dispatch,
   getState
