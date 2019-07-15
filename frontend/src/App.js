@@ -6,10 +6,11 @@ import AppNavbar from './components/layout/AppNavbar';
 import PageLanding from './pages/PageLanding';
 import PageRegister from './pages/auth/PageRegister';
 import PageLogin from './pages/auth/PageLogin';
+import AppAlert from './components/layout/AppAlert';
 // Redux Imports
 import { Provider } from 'react-redux';
 import store from './store';
-// Styles 
+// Styles
 import './App.css';
 const App = () => (
   <Provider store={store}>
@@ -18,8 +19,11 @@ const App = () => (
         <AppNavbar />
         <Route exact path="/" component={PageLanding} />
         <section className="container">
-          <Route exact path="/register" component={PageRegister} />
-          <Route exact path="/login" component={PageLogin} />
+          <AppAlert />
+          <Switch>
+            <Route exact path="/register" component={PageRegister} />
+            <Route exact path="/login" component={PageLogin} />
+          </Switch>
         </section>
       </Fragment>
     </Router>

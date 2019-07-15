@@ -7,10 +7,14 @@ import React, { useState } from 'react';
 // import axios from 'axios';
 import StyledForm from '../../styles/FormStyles';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { setAlert } from '../../actions/alertAction';
+import PropTypes from 'prop-types';
+
 // import ErrorMessage from './ErrorMessage';
 // import isEmpty from '../validation/is-empty';
 
-const PageRegister = () => {
+const PageRegister = props => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -20,13 +24,19 @@ const PageRegister = () => {
 
   // Pull out the name, email, password, confirmPassword from the formData
   const { name, email, password, confirmPassword } = formData;
+
+  // Pull out the action from the props
+  const { setAlert } = props;
+
   const handleChange = event =>
     setFormData({ ...formData, [event.target.name]: event.target.value });
   const handleRegister = async event => {
     event.preventDefault();
     // 1. Check whether the passwords match, if match then allow registration
     if (password !== confirmPassword) {
-      console.log('Passwords do not match');
+      // console.log('Passwords do not match');
+      // 3. Set Alert for the mismatch of the passwords
+      setAlert('Passwords do not match', 'danger');
     } else {
       console.log(formData);
     }
@@ -97,4 +107,11 @@ const PageRegister = () => {
   );
 };
 
-export default PageRegister;
+PageRegister.propTypes = {
+  setAlert: PropTypes.func.isRequired
+};
+
+export default connect(
+  null,
+  { setAlert }
+)(PageRegister);
