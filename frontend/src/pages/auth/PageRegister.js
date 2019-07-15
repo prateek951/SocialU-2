@@ -8,7 +8,9 @@ import React, { useState } from 'react';
 import StyledForm from '../../styles/FormStyles';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+// Actions
 import { setAlert } from '../../actions/alertAction';
+import { registerUser } from '../../actions/authActions';
 import PropTypes from 'prop-types';
 
 // import ErrorMessage from './ErrorMessage';
@@ -26,7 +28,7 @@ const PageRegister = props => {
   const { name, email, password, confirmPassword } = formData;
 
   // Pull out the action from the props
-  const { setAlert } = props;
+  const { setAlert, registerUser } = props;
 
   const handleChange = event =>
     setFormData({ ...formData, [event.target.name]: event.target.value });
@@ -38,7 +40,9 @@ const PageRegister = props => {
       // 3. Set Alert for the mismatch of the passwords
       setAlert('Passwords do not match', 'danger');
     } else {
-      console.log(formData);
+      // console.log(formData);
+      // 4. Call the registerUser action to register the new user
+      registerUser({ name, email, password });
     }
   };
 
@@ -57,7 +61,6 @@ const PageRegister = props => {
             placeholder="Name"
             value={name}
             onChange={handleChange}
-            required
           />
         </label>
         <label htmlFor="email">
@@ -68,7 +71,6 @@ const PageRegister = props => {
             placeholder="Email"
             value={email}
             onChange={handleChange}
-            required
           />
         </label>
         <small className="form-text">
@@ -83,7 +85,6 @@ const PageRegister = props => {
             placeholder="Password"
             value={password}
             onChange={handleChange}
-            required
           />
         </label>
         <label htmlFor="confirmPassword">
@@ -94,7 +95,6 @@ const PageRegister = props => {
             placeholder="Password"
             value={confirmPassword}
             onChange={handleChange}
-            required
           />
         </label>
         <button type="submit">Register</button>
@@ -108,10 +108,11 @@ const PageRegister = props => {
 };
 
 PageRegister.propTypes = {
-  setAlert: PropTypes.func.isRequired
+  setAlert: PropTypes.func.isRequired,
+  registerUser: PropTypes.func.isRequired
 };
 
 export default connect(
   null,
-  { setAlert }
+  { setAlert, registerUser }
 )(PageRegister);
