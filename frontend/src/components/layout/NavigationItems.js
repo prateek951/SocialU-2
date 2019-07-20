@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import NavStyles from '../../styles/NavStyles';
 import { connect } from 'react-redux';
 import { logoutUser } from '../../actions/authActions';
@@ -26,7 +26,6 @@ const NavigationItems = ({
   };
   const logMeOut = () => {
     logoutUser();
-    return <Redirect to="/" />;
   };
 
   // All the authenticated  routes will go here

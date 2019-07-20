@@ -14,6 +14,8 @@ import store from './store';
 import './App.css';
 import { setAuthToken } from './utils/setAuthToken';
 import { loadUser } from './actions/authActions';
+import PageDashboard from './pages/dashboard/PageDashboard';
+import PrivateRoute from './components/routing/PrivateRoute';
 
 // Check whether there is token in the local storage
 if (localStorage.token) {
@@ -42,6 +44,7 @@ const App = () => {
             <Switch>
               <Route exact path="/register" component={PageRegister} />
               <Route exact path="/login" component={PageLogin} />
+              <PrivateRoute exact path="/dashboard" component={PageDashboard} />
             </Switch>
           </section>
         </Fragment>
