@@ -4,7 +4,7 @@
 
 import axios from 'axios';
 import { setAlert } from './alertAction';
-import { GET_PROFILE, PROFILE_ERROR } from './types';
+import { GET_PROFILE, PROFILE_ERROR, CREATE_PROFILE } from './types';
 
 // Action to get the current profile
 export const getCurrentProfile = () => async (dispatch, getState) => {
@@ -28,4 +28,8 @@ export const getCurrentProfile = () => async (dispatch, getState) => {
       }
     });
   }
+};
+
+export const createProfile = profileData => (dispatch, getState) => {
+  console.log(profileData);
 };
