@@ -29,12 +29,12 @@ router.get('/', authMiddleware, async (req, res) => {
  * @access Public
  */
 
-const validationChecks = [
+const loginValidationChecks = [
   check('email', 'Please enter a valid email').isEmail(),
   check('password', 'Password is required').exists()
 ];
 
-router.post('/', validationChecks, async (req, res) => {
+router.post('/', loginValidationChecks, async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res

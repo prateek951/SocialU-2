@@ -12,7 +12,7 @@ const { check, validationResult } = require('express-validator');
  * @desc  Register the new incoming user
  * @access Public
  */
-const validationChecks = [
+const registerValidationChecks = [
   check('name', 'Name is required')
     .not()
     .isEmpty(),
@@ -23,7 +23,7 @@ const validationChecks = [
   ).isLength({ min: 6 })
 ];
 
-router.post('/', validationChecks, async (req, res) => {
+router.post('/', registerValidationChecks, async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res
