@@ -12,7 +12,7 @@ const PageDashboard = ({
   useEffect(() => {
     getCurrentProfile();
     //eslint-disable-next-line
-  }, []);
+  }, [getCurrentProfile]);
   // If  the loading is still going on and we have not got the profile,
   // show the spinner else render the profile
   return loading && profile === null ? (
@@ -29,9 +29,8 @@ const PageDashboard = ({
       ) : (
         <Fragment>
           <p>You do not have a profile yet!</p>
-          <Link to="/create-profile"
-          className="btn btn-primary my-1">
-              Create a Profile
+          <Link to="/create-profile" className="btn btn-primary my-1">
+            Create a Profile
           </Link>
         </Fragment>
       )}
