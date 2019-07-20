@@ -1,7 +1,11 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-const PageLanding = () => {
+const PageLanding = ({ isAuthenticated }) => {
+  if (isAuthenticated) {
+    return <Redirect to="/dashboard" />;
+  }
   return (
     <div>
       <section className="landing">
@@ -27,4 +31,11 @@ const PageLanding = () => {
   );
 };
 
-export default PageLanding;
+const mapStateToProps = state => ({
+  isAuthenticated: state.authReducer.isAuthenticated
+});
+
+export default connect(
+  mapStateToProps,
+  {}
+)(PageLanding);

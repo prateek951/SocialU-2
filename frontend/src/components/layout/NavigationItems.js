@@ -12,9 +12,6 @@ const NavigationItems = ({
   const guestRoutes = () => {
     return (
       <Fragment>
-        <Link to="/profiles">
-          <li>Developers</li>
-        </Link>
         <Link to="/register">
           <li>Register</li>
         </Link>
@@ -32,6 +29,12 @@ const NavigationItems = ({
   const authenticatedRoutes = () => {
     return (
       <Fragment>
+        <li>
+          <Link to="/dashboard">
+            <i className="fas fa-user" />{' '}
+            <span className="hide-sm">Dashboard</span>
+          </Link>
+        </li>
         <li>
           <button onClick={logMeOut}>
             <i className="fas fa-sign-out-alt" />{' '}

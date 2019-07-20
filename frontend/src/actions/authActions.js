@@ -10,7 +10,8 @@ import {
   AUTH_ERROR,
   LOGIN_SUCCESS,
   LOGIN_FAILURE,
-  LOGOUT_USER
+  LOGOUT_USER,
+  CLEAR_PROFILE
 } from './types';
 import axios from 'axios';
 import { setAlert } from './alertAction';
@@ -143,12 +144,15 @@ export const loginUser = (email, password) => async (dispatch, getState) => {
 };
 
 /**
- * @desc Logout  the user
+ * @desc Logout and clear the profile of the user (if he has one)
  * @param {Payload}
  * @returns {Object} Dispatches an action to logout
  */
 
 export const logoutUser = () => async (dispatch, getState) => {
+  // Once the logout action has been dispatched, clear the profile of the user
+  // if he has one otherwise his profile was already cleared if he didn't had one
+  dispatch({ type: CLEAR_PROFILE });
   dispatch({
     type: LOGOUT_USER
   });
