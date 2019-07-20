@@ -1,9 +1,10 @@
 import React, { useState, Fragment } from 'react';
+import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createProfile } from '../../actions/profileActions';
 
-const PageCreateProfile = ({ createProfile }) => {
+const PageCreateProfile = ({ createProfile, history }) => {
   const [formData, setFormData] = useState({
     company: '',
     website: '',
@@ -39,6 +40,12 @@ const PageCreateProfile = ({ createProfile }) => {
   const handleChange = event =>
     setFormData({ ...formData, [event.target.name]: event.target.value });
 
+  const handleSubmit = event => {
+    event.preventDefault();
+    // Create a new profile
+    createProfile(formData, history);
+  };
+
   return (
     <Fragment>
       <section className="container">
@@ -48,7 +55,7 @@ const PageCreateProfile = ({ createProfile }) => {
           profile stand out
         </p>
         <small>* = required field</small>
-        <form className="form">
+        <form className="form" onSubmit={handleSubmit}>
           <div className="form-group">
             <select name="status" value={status} onChange={handleChange}>
               <option value="0">* Select Professional Status</option>
@@ -221,4 +228,4 @@ PageCreateProfile.propTypes = {
 export default connect(
   null,
   { createProfile }
-)(PageCreateProfile);
+)(withRouter(PageCreateProfile));
