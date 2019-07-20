@@ -370,7 +370,7 @@ router.put(
         });
       }
       // 6. Add the profile education  for the fetched profile
-      profile.experience.unshift(newEducationObj);
+      profile.education.unshift(newEducationObj);
       // 7. Commit the changes by saving the updated profile
       await profile.save();
       // 8. Send the success response with the whole profile

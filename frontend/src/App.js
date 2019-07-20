@@ -18,6 +18,8 @@ import PageDashboard from './pages/dashboard/PageDashboard';
 import PrivateRoute from './components/routing/PrivateRoute';
 import PageCreateProfile from './pages/profile-form/PageCreateProfile';
 import PageEditProfile from './pages/profile-form/PageEditProfile';
+import PageAddExperience from './pages/profile-form/PageAddExperience';
+import PageAddEducation from './pages/profile-form/PageAddEducation';
 // Check whether there is token in the local storage
 if (localStorage.token) {
   // 2. Set the Auth token in the local storage in the global
@@ -52,9 +54,19 @@ const App = () => {
                 component={PageCreateProfile}
               />
               <PrivateRoute
-                exact 
+                exact
                 path="/edit-profile"
                 component={PageEditProfile}
+              />
+              <PrivateRoute
+                exact
+                path="/add-experience"
+                component={PageAddExperience}
+              />
+              <PrivateRoute
+                exact
+                path="/add-education"
+                component={PageAddEducation}
               />
             </Switch>
           </section>
