@@ -1,10 +1,15 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { createProfile } from '../../actions/profileActions';
+import { createProfile, getCurrentProfile } from '../../actions/profileActions';
 
-const PageCreateProfile = ({ createProfile, history }) => {
+const PageEditProfile = ({
+  profile: { profile, loading },
+  createProfile,
+  history,
+  getCurrentProfile
+}) => {
   const [formData, setFormData] = useState({
     company: '',
     website: '',
@@ -21,6 +26,29 @@ const PageCreateProfile = ({ createProfile, history }) => {
   });
 
   const [showSocial, toggleShowSocial] = useState(false);
+
+  useEffect(() => {
+    // 1. Get the current profile
+    getCurrentProfile();
+    // 2. Set the form data if not loading and you have got the profile data
+    setFormData({
+      company: loading || !profile.company ? '' : profile.company,
+      website: loading || !profile.website ? '' : profile.website,
+      location: loading || !profile.location ? '' : profile.location,
+      status: loading || !profile.status ? '' : profile.status,
+      skills: loading || !profile.skills ? '' : profile.skills.join(','),
+      githubUsername:
+        loading || !profile.githubUsername ? '' : profile.githubUsername,
+      bio: loading || !profile.bio ? '' : profile.bio,
+      twitter: loading || !profile.social ? '' : profile.social.twitter,
+      facebook: loading || !profile.social ? '' : profile.social.facebook,
+      linkedin: loading || !profile.social ? '' : profile.social.linkedin,
+      youtube: loading || !profile.social ? '' : profile.social.youtube,
+      instagram: loading || !profile.social ? '' : profile.social.instagram
+    });
+    // eslint-disable-next-line
+  }, [loading, getCurrentProfile]);
+
   // Pull out all the data pertaining to the profile creation
   const {
     company,
@@ -42,14 +70,15 @@ const PageCreateProfile = ({ createProfile, history }) => {
 
   const handleSubmit = event => {
     event.preventDefault();
-    // Create a new profile
-    createProfile(formData, history);
+    // Edit the existing profile,
+    // pass the edit mode as true
+    createProfile(formData, history, true);
   };
 
   return (
     <Fragment>
       <section className="container">
-        <h1 className="large text-primary">Create Your Profile</h1>
+        <h1 className="large text-primary">Edit Your Profile</h1>
         <p className="lead">
           <i className="fas fa-user" /> Let's get some information to make your
           profile stand out
@@ -221,11 +250,19 @@ const PageCreateProfile = ({ createProfile, history }) => {
   );
 };
 
-PageCreateProfile.propTypes = {
-  createProfile: PropTypes.func.isRequired
+PageEditProfile.propTypes = {
+  createProfile: PropTypes.func.isRequired,
+  getCurrentProfile: PropTypes.func.isRequired,
+  profile: PropTypes.object.isRequired
+};
+
+const mapStateToProps = (state, ownProps) => {
+  return {
+    profile: state.profileReducer
+  };
 };
 
 export default connect(
-  null,
-  { createProfile }
-)(withRouter(PageCreateProfile));
+  mapStateToProps,
+  { createProfile, getCurrentProfile }
+)(withRouter(PageEditProfile));

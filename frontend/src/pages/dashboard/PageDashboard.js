@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getCurrentProfile } from '../../actions/profileActions';
 import Spinner from '../../components/layout/Spinner';
+import DashboardActions from './DashboardActions';
 const PageDashboard = ({
   getCurrentProfile,
   auth: { user },
@@ -25,7 +26,9 @@ const PageDashboard = ({
         Welcome {user && user.name}
       </p>
       {profile !== null ? (
-        <Fragment>Has</Fragment>
+        <Fragment>
+          <DashboardActions />
+        </Fragment>
       ) : (
         <Fragment>
           <p>You do not have a profile yet!</p>
