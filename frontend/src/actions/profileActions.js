@@ -9,7 +9,9 @@ import {
   PROFILE_ERROR,
   UPDATE_PROFILE,
   CLEAR_PROFILE,
-  ACCOUNT_DELETED
+  ACCOUNT_DELETED,
+  GET_PROFILES,
+  GET_REPOS
 } from './types';
 
 // Action to get the current profile
@@ -242,5 +244,66 @@ export const deleteAccount = () => async (dispatch, getState) => {
         }
       });
     }
+  }
+};
+
+// Get the list of all the profiles
+export const getProfiles = () => async (dispatch, getState) => {
+  dispatch({ type: CLEAR_PROFILE });
+
+  try {
+    // 1. Hit the backend server to get the list of all the profiles
+    const response = await axios.get('/api/profile');
+    // 2. Dispatch the action to basically set all the profiles that we got
+    dispatch({
+      type: GET_PROFILES,
+      payload: response.data
+    });
+  } catch (error) {
+    dispatch({
+      type: PROFILE_ERROR,
+      payload: { msg: error.response.statusText, status: error.response.status }
+    });
+  }
+};
+// Get the profile by the userId
+export const getProfileById = userId => async dispatch => {
+  try {
+    // 1. Hit the backend server to get a specific profile by its id
+    const response = await axios.get(`/api/profile/user/${userId}`);
+    // 2. Set the profile in redux
+    dispatch({
+      type: GET_PROFILE,
+      payload: response.data
+    });
+  } catch (error) {
+    dispatch({
+      type: PROFILE_ERROR,
+      payload: {
+        msg: error.response.statusText,
+        status: error.response.status
+      }
+    });
+  }
+};
+// Get all the github repos pertaining to a username
+
+export const getRepos = username => async (dispatch, getState) => {
+  try {
+    // 1. Hit the backend server to get all the repos pertaining to a username
+    const response = await axios.get(`/api/profile/github/${username}`);
+    // 2. Set the repos to the redux
+    dispatch({
+      type: GET_REPOS,
+      payload: response.data
+    });
+  } catch (error) {
+    dispatch({
+      type: PROFILE_ERROR,
+      payload: {
+        msg: error.response.statusText,
+        status: error.response.status
+      }
+    });
   }
 };
