@@ -10,6 +10,7 @@ import PageLogin from '../../pages/auth/PageLogin';
 import AppAlert from '../layout/AppAlert';
 import PrivateRoute from './PrivateRoute';
 import PageNotFound from '../../pages/PageNotFound';
+import PageProfiles from '../../pages/profiles/PageProfiles';
 
 const Routes = () => {
   return (
@@ -18,6 +19,7 @@ const Routes = () => {
       <Switch>
         <Route exact path="/register" component={PageRegister} />
         <Route exact path="/login" component={PageLogin} />
+         <Route exact path="/profiles" component={PageProfiles} />
         <PrivateRoute exact path="/dashboard" component={PageDashboard} />
         <PrivateRoute
           exact

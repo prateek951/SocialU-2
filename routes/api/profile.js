@@ -126,11 +126,11 @@ router.post('/', [authMiddleware, validationChecks], async (req, res) => {
 });
 
 /**
- * @route GET /api/profile/all
+ * @route GET /api/profile
  * @desc Retrieve all the profiles
  * @access Public
  */
-router.get('/all', async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     // 1. Query for all the profiles and for each profile populate
     // the name and the avatar from the user

@@ -32,9 +32,11 @@ const ProfileExperience = ({ experience, deleteExperience }) => {
       <h2 className="my-2">Experience Credentials</h2>
       <table className="table">
         {experience.length === 0 || experience === null ? (
-          <tr>
-            <td>No profile experience listed yet.</td>
-          </tr>
+          <tbody>
+            <tr>
+              <td>No profile experience listed yet</td>
+            </tr>
+          </tbody>
         ) : (
           <Fragment>
             <thead>

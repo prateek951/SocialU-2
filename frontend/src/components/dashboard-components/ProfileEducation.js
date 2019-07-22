@@ -32,9 +32,11 @@ const ProfileEducation = ({ education, deleteEducation }) => {
       <h2 className="my-2">Education Credentials</h2>
       <table className="table">
         {education.length === 0 || education === null ? (
-          <tr>
-            <td>No profile education listed yet</td>
-          </tr>
+          <tbody>
+            <tr>
+              <td>No profile education listed yet</td>
+            </tr>
+          </tbody>
         ) : (
           <Fragment>
             <thead>

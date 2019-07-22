@@ -12,12 +12,21 @@ const NavigationItems = ({
   const guestRoutes = () => {
     return (
       <Fragment>
-        <Link to="/register">
-          <li>Register</li>
-        </Link>
-        <Link to="/login">
-          <li>Login</li>
-        </Link>
+        <li>
+          <Link to="/profiles">
+            <span>Profiles</span>
+          </Link>
+        </li>
+        <li>
+          <Link to="/register">
+            <span>Register</span>
+          </Link>
+        </li>
+        <li>
+          <Link to="/login">
+            <span>Login</span>
+          </Link>
+        </li>
       </Fragment>
     );
   };
@@ -29,6 +38,11 @@ const NavigationItems = ({
   const authenticatedRoutes = () => {
     return (
       <Fragment>
+        <li>
+          <Link to="/profiles">
+            <span className="hide-sm">Profiles</span>
+          </Link>
+        </li>
         <li>
           <Link to="/dashboard">
             <i className="fas fa-user" />{' '}

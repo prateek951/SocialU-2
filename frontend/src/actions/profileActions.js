@@ -225,7 +225,7 @@ export const deleteAccount = () => async (dispatch, getState) => {
   ) {
     try {
       // 1. Hit the backend with the delete request to delete the account
-      const response = await axios.delete(`/api/profile`);
+      await axios.delete(`/api/profile`);
       // 2. Dispatch an action to clear the profile
       dispatch({
         type: CLEAR_PROFILE
@@ -262,7 +262,7 @@ export const getProfiles = () => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: PROFILE_ERROR,
-      payload: { msg: error.response.statusText, status: error.response.status }
+      payload: { msg: 'Profile Error ocurred', status: 500 }
     });
   }
 };
