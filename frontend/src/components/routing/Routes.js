@@ -11,6 +11,7 @@ import AppAlert from '../layout/AppAlert';
 import PrivateRoute from './PrivateRoute';
 import PageNotFound from '../../pages/PageNotFound';
 import PageProfiles from '../../pages/profiles/PageProfiles';
+import SingleProfile from '../../pages/profile/SingleProfile';
 
 const Routes = () => {
   return (
@@ -19,7 +20,9 @@ const Routes = () => {
       <Switch>
         <Route exact path="/register" component={PageRegister} />
         <Route exact path="/login" component={PageLogin} />
-         <Route exact path="/profiles" component={PageProfiles} />
+        <Route exact path="/profiles" component={PageProfiles} />
+        <Route exact path="/profile/:userId" component={SingleProfile} />
+
         <PrivateRoute exact path="/dashboard" component={PageDashboard} />
         <PrivateRoute
           exact

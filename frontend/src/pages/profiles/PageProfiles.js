@@ -8,7 +8,7 @@ const PageProfiles = ({ getProfiles, profile: { profiles, loading } }) => {
   useEffect(() => {
     getProfiles();
     //eslint-disable-next-line
-  }, []);
+  }, [getProfiles]);
 
   console.log(profiles);
   return (
@@ -39,7 +39,7 @@ const PageProfiles = ({ getProfiles, profile: { profiles, loading } }) => {
 };
 
 PageProfiles.propTypes = {
-  profiles: PropTypes.array.isRequired,
+  profile: PropTypes.object.isRequired,
   getProfiles: PropTypes.func.isRequired
 };
 

@@ -460,6 +460,6 @@ router.get('/github/:username', async (req, res) => {
     console.error(error);
     res.status(HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR).send('Server error');
   }
-});
+}); 
 
 module.exports = router;

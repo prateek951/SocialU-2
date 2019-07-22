@@ -262,7 +262,10 @@ export const getProfiles = () => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: PROFILE_ERROR,
-      payload: { msg: 'Profile Error ocurred', status: 500 }
+      payload: {
+        msg: error.response.statusText,
+        status: error.response.status
+      }
     });
   }
 };
@@ -270,7 +273,10 @@ export const getProfiles = () => async (dispatch, getState) => {
 export const getProfileById = userId => async dispatch => {
   try {
     // 1. Hit the backend server to get a specific profile by its id
-    const response = await axios.get(`/api/profile/user/${userId}`);
+    // console.log(userId);
+    const response = await axios.get(
+      `/api/profile/user/${userId}`
+    );
     // 2. Set the profile in redux
     dispatch({
       type: GET_PROFILE,
