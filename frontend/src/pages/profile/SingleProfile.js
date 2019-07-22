@@ -5,6 +5,7 @@ import Spinner from '../../components/layout/Spinner';
 import { connect } from 'react-redux';
 import { getProfileById } from '../../actions/profileActions';
 import ProfileHeader from '../../components/profile/ProfileHeader';
+import ProfileAbout from '../../components/profile/ProfileAbout';
 const SingleProfile = ({
   profileReducerState: { profile, loading },
   auth,
@@ -33,37 +34,8 @@ const SingleProfile = ({
               </Link>
             )}
           <div className="profile-grid my-1">
-            {/* <!-- Top --> */}
             <ProfileHeader profile={profile} />
-
-            {/* <!-- About --> */}
-            <div class="profile-about bg-light p-2">
-              <h2 class="text-primary">John's Bio</h2>
-              <p>
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sed
-                doloremque nesciunt, repellendus nostrum deleniti recusandae
-                nobis neque modi perspiciatis similique?
-              </p>
-              <div class="line" />
-              <h2 class="text-primary">Skill Set</h2>
-              <div class="skills">
-                <div class="p-1">
-                  <i class="fa fa-check" /> HTML
-                </div>
-                <div class="p-1">
-                  <i class="fa fa-check" /> CSS
-                </div>
-                <div class="p-1">
-                  <i class="fa fa-check" /> JavaScript
-                </div>
-                <div class="p-1">
-                  <i class="fa fa-check" /> Python
-                </div>
-                <div class="p-1">
-                  <i class="fa fa-check" /> C#
-                </div>
-              </div>
-            </div>
+            <ProfileAbout profile={profile} />
 
             {/* <!-- Experience --> */}
             <div class="profile-exp bg-white p-2">
