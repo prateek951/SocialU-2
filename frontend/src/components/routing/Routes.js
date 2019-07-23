@@ -13,6 +13,7 @@ import PageNotFound from '../../pages/PageNotFound';
 import PageProfiles from '../../pages/profiles/PageProfiles';
 import SingleProfile from '../../pages/profile/SingleProfile';
 import PagePosts from '../../pages/posts/PagePosts';
+import PagePost from '../../pages/post/PagePost';
 
 const Routes = () => {
   return (
@@ -42,6 +43,8 @@ const Routes = () => {
           component={PageAddEducation}
         />
         <PrivateRoute exact path="/posts" component={PagePosts} />
+        <PrivateRoute exact path="/posts/:postId" component={PagePost} />
+
         <Route component={PageNotFound} />
       </Switch>
     </section>

@@ -3,7 +3,8 @@ import {
   POST_ERROR,
   UPDATE_LIKES,
   DELETE_POST,
-  ADD_POST
+  ADD_POST,
+  GET_POST
 } from '../actions/types';
 
 // 1. Create the initial state for the post reducer
@@ -25,6 +26,12 @@ export default (state = INITIAL_STATE, { type, payload }) => {
       return {
         ...state,
         posts: payload,
+        loading: false
+      };
+    case GET_POST:
+      return {
+        ...state,
+        post: payload,
         loading: false
       };
     case POST_ERROR:

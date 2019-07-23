@@ -1,6 +1,13 @@
 import axios from 'axios';
 import { setAlert } from './alertAction';
-import { GET_POSTS, POST_ERROR, UPDATE_LIKES, DELETE_POST, ADD_POST } from './types';
+import {
+  GET_POSTS,
+  POST_ERROR,
+  UPDATE_LIKES,
+  DELETE_POST,
+  ADD_POST,
+  GET_POST
+} from './types';
 // Action to get the list of all the posts
 
 export const getPosts = () => async dispatch => {
@@ -9,6 +16,29 @@ export const getPosts = () => async dispatch => {
     const response = await axios.get('/api/posts');
     dispatch({
       type: GET_POSTS,
+      payload: response.data
+    });
+  } catch (error) {
+    dispatch({
+      type: POST_ERROR,
+      payload: {
+        msg: error.response.statusText,
+        status: error.response.status
+      }
+    });
+  }
+};
+
+// Action to get a single post by its post id
+
+export const getPost = postId => async dispatch => {
+  try {
+    // 1. Hit the backend with the request to fetch the post by its id     const response = await axios.get(`/api/posts`);
+
+    const response = await axios.get(`/api/posts/${postId}`);
+
+    dispatch({
+      type: GET_POST,
       payload: response.data
     });
   } catch (error) {
@@ -115,9 +145,9 @@ export const addPost = formData => async dispatch => {
   };
 
   try {
-    // 2. Create a request to add a new post 
-    const response = await axios.post('/api/posts',formData,config);
-    
+    // 2. Create a request to add a new post
+    const response = await axios.post('/api/posts', formData, config);
+
     dispatch({
       type: ADD_POST,
       payload: response.data
