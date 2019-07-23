@@ -5,12 +5,11 @@ import { connect } from 'react-redux';
 import { getPost } from '../../actions/postActions';
 import Spinner from '../../components/layout/Spinner';
 import PostItem from '../../components/post/PostItem';
+import CommentForm from '../../components/post/CommentForm';
 
 const PagePost = ({ match, postReducerState: { post, loading }, getPost }) => {
   useEffect(() => {
-    return () => {
-      getPost(match.params.postId);
-    };
+    getPost(match.params.postId);
     //eslint-disable-next-line
   }, [getPost]);
   return loading || post === null ? (
@@ -21,6 +20,7 @@ const PagePost = ({ match, postReducerState: { post, loading }, getPost }) => {
         Back to Posts
       </Link>
       <PostItem post={post} showActions={false} />
+      <CommentForm postId={post._id} />
     </Fragment>
   );
 };

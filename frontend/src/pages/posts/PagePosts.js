@@ -8,9 +8,7 @@ import PostForm from '../../components/post/PostForm';
 
 const PagePosts = ({ postReducerState: { posts, loading }, getPosts }) => {
   useEffect(() => {
-    return () => {
-      getPosts();
-    };
+    getPosts();
   }, [getPosts]);
   console.log(posts);
   return loading ? (

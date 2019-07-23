@@ -4,7 +4,9 @@ import {
   UPDATE_LIKES,
   DELETE_POST,
   ADD_POST,
-  GET_POST
+  GET_POST,
+  ADD_COMMENT,
+  REMOVE_COMMENT
 } from '../actions/types';
 
 // 1. Create the initial state for the post reducer
@@ -58,6 +60,23 @@ export default (state = INITIAL_STATE, { type, payload }) => {
       return {
         ...state,
         posts: [payload, ...state.posts],
+        loading: false
+      };
+    case REMOVE_COMMENT:
+      return {
+        ...state,
+        post: {
+          ...state.post,
+          comments: state.posts.comments.filter(
+            comment => comment._id !== payload
+          )
+        },
+        loading: false
+      };
+    case ADD_COMMENT:
+      return {
+        ...state,
+        post: { ...state.post, comments: payload },
         loading: false
       };
     default:
