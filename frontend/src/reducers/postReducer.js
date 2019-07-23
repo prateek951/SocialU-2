@@ -1,4 +1,4 @@
-import { GET_POSTS, POST_ERROR } from '../actions/types';
+import { GET_POSTS, POST_ERROR, UPDATE_LIKES } from '../actions/types';
 
 // 1. Create the initial state for the post reducer
 const INITIAL_STATE = {
@@ -25,6 +25,14 @@ export default (state = INITIAL_STATE, { type, payload }) => {
       return {
         ...state,
         error: payload,
+        loading: false
+      };
+    case UPDATE_LIKES:
+      return {
+        ...state,
+        posts: state.posts.map(post =>
+          post._id === payload.id ? { ...post, likes: payload.likes } : post
+        ),
         loading: false
       };
     default:
