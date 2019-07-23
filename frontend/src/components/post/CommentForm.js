@@ -24,7 +24,7 @@ const CommentForm = ({ postId, addComment }) => {
           rows="5"
           value={text}
           onChange={e => setText(e.target.value)}
-          placeholder="Create a new post"
+          placeholder="Create a new comment"
           required
         />
         <input type="submit" className="btn btn-dark my-1" value="Submit" />

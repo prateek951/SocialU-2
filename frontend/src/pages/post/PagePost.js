@@ -6,6 +6,7 @@ import { getPost } from '../../actions/postActions';
 import Spinner from '../../components/layout/Spinner';
 import PostItem from '../../components/post/PostItem';
 import CommentForm from '../../components/post/CommentForm';
+import CommentItem from '../../components/post/CommentItem';
 
 const PagePost = ({ match, postReducerState: { post, loading }, getPost }) => {
   useEffect(() => {
@@ -21,12 +22,18 @@ const PagePost = ({ match, postReducerState: { post, loading }, getPost }) => {
       </Link>
       <PostItem post={post} showActions={false} />
       <CommentForm postId={post._id} />
+      <div className="comments">
+        {post.comments.map(comment => (
+          <CommentItem key={comment._id} comment={comment}
+          postId={post._id} />
+        ))}
+      </div>
     </Fragment>
   );
 };
 
 PagePost.propTypes = {
-  post: PropTypes.object.isRequired,
+  postReducerState: PropTypes.object.isRequired,
   getPost: PropTypes.func.isRequired
 };
 

@@ -288,7 +288,7 @@ router.post(
 );
 
 /**
- * @route POST /api/posts/comment/:id/:comment_id
+ * @route DELETE /api/posts/comment/:id/:comment_id
  * @desc Delete a comment on a specific post by the comment id of the
  * comment. Here we will need the comment id since each user can have
  * several comments unlike likes which is one like per person per post.
