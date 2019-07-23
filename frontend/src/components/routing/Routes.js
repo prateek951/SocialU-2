@@ -12,6 +12,7 @@ import PrivateRoute from './PrivateRoute';
 import PageNotFound from '../../pages/PageNotFound';
 import PageProfiles from '../../pages/profiles/PageProfiles';
 import SingleProfile from '../../pages/profile/SingleProfile';
+import PagePosts from '../../pages/posts/PagePosts';
 
 const Routes = () => {
   return (
@@ -40,6 +41,7 @@ const Routes = () => {
           path="/add-education"
           component={PageAddEducation}
         />
+        <PrivateRoute exact path="/posts" component={PagePosts} />
         <Route component={PageNotFound} />
       </Switch>
     </section>
