@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { getPosts } from '../../actions/postActions';
 import Spinner from '../../components/layout/Spinner';
 import PostItem from '../../components/post/PostItem';
+import PostForm from '../../components/post/PostForm';
 
 const PagePosts = ({ postReducerState: { posts, loading }, getPosts }) => {
   useEffect(() => {
@@ -21,7 +22,7 @@ const PagePosts = ({ postReducerState: { posts, loading }, getPosts }) => {
         <i className="fas fa-user" />
         Socialize and Connect across Continents
       </p>
-      {/* PostForm to create a new post */}
+      <PostForm />
       <div className="posts">
         {posts.length > 0 ? (
           posts.map(post => <PostItem key={post._id} post={post} />)
