@@ -10,6 +10,11 @@ const CommentItem = ({
   auth,
   deleteComment
 }) => {
+  const paragraphStyles = {
+    fontFamily: 'Roboto, sans-serif',
+    fontSize: '20px'
+  };
+
   return (
     <div className="post bg-white p-1 my-1">
       <div>
@@ -19,7 +24,9 @@ const CommentItem = ({
         </Link>
       </div>
       <div>
-        <p className="my-1">{text} </p>
+        <p className="my-1" style={paragraphStyles}>
+          {text}
+        </p>
         <p className="post-date">
           Posted on <Moment format="YYYY/MM/DD">{date}</Moment>
         </p>

@@ -16,7 +16,7 @@ const ProfileExperienceSection = ({
         <strong>Position: </strong> {title}
       </p>
       <p>
-        <strong>Description: </strong> {description.slice(0, 25)}
+        <strong>Description: </strong> {description.slice(0, 35)}
       </p>
     </div>
   );

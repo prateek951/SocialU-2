@@ -55,10 +55,10 @@ const NavigationItems = ({
           </Link>
         </li>
         <li>
-          <button onClick={logMeOut}>
+          <Link is="button" to="" onClick={logMeOut}>
             <i className="fas fa-sign-out-alt" />{' '}
             <span className="hide-sm">Logout</span>
-          </button>
+          </Link>
         </li>
       </Fragment>
     );

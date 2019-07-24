@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { addComment } from '../../actions/postActions';
+import StyledForm from '../../styles/FormStyles';
+
 const CommentForm = ({ postId, addComment }) => {
   // Set the initial state
   const [text, setText] = useState('');
@@ -10,7 +12,7 @@ const CommentForm = ({ postId, addComment }) => {
       <div className="bg-primary p">
         <h3>Leave a Comment </h3>
       </div>
-      <form
+      <StyledForm
         className="form my-1"
         onSubmit={e => {
           e.preventDefault();
@@ -28,7 +30,7 @@ const CommentForm = ({ postId, addComment }) => {
           required
         />
         <input type="submit" className="btn btn-dark my-1" value="Submit" />
-      </form>
+      </StyledForm>
     </div>
   );
 };

@@ -3,6 +3,7 @@ import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createProfile } from '../../actions/profileActions';
+import StyledForm from '../../styles/FormStyles';
 
 const PageCreateProfile = ({ createProfile, history }) => {
   const [formData, setFormData] = useState({
@@ -55,7 +56,7 @@ const PageCreateProfile = ({ createProfile, history }) => {
           profile stand out
         </p>
         <small>* = required field</small>
-        <form className="form" onSubmit={handleSubmit}>
+        <StyledForm className="form" onSubmit={handleSubmit}>
           <div className="form-group">
             <select name="status" value={status} onChange={handleChange}>
               <option value="0">* Select Professional Status</option>
@@ -156,7 +157,7 @@ const PageCreateProfile = ({ createProfile, history }) => {
           {showSocial ? (
             <Fragment>
               <div className="form-group social-input">
-                <i className="fab fa-twitter fa-2x" />
+                <i className="fab fa-twitter" />
                 <input
                   type="text"
                   placeholder="Twitter URL"
@@ -167,7 +168,7 @@ const PageCreateProfile = ({ createProfile, history }) => {
               </div>
 
               <div className="form-group social-input">
-                <i className="fab fa-facebook fa-2x" />
+                <i className="fab fa-facebook" />
                 <input
                   type="text"
                   placeholder="Facebook URL"
@@ -178,7 +179,7 @@ const PageCreateProfile = ({ createProfile, history }) => {
               </div>
 
               <div className="form-group social-input">
-                <i className="fab fa-youtube fa-2x" />
+                <i className="fab fa-youtube" />
                 <input
                   type="text"
                   placeholder="YouTube URL"
@@ -189,7 +190,7 @@ const PageCreateProfile = ({ createProfile, history }) => {
               </div>
 
               <div className="form-group social-input">
-                <i className="fab fa-linkedin fa-2x" />
+                <i className="fab fa-linkedin" />
                 <input
                   type="text"
                   placeholder="Linkedin URL"
@@ -200,7 +201,7 @@ const PageCreateProfile = ({ createProfile, history }) => {
               </div>
 
               <div className="form-group social-input">
-                <i className="fab fa-instagram fa-2x" />
+                <i className="fab fa-instagram" />
                 <input
                   type="text"
                   placeholder="Instagram URL"
@@ -215,7 +216,7 @@ const PageCreateProfile = ({ createProfile, history }) => {
           <Link className="btn btn-light my-1" to="/dashboard">
             Go Back
           </Link>
-        </form>
+        </StyledForm>
       </section>
     </Fragment>
   );

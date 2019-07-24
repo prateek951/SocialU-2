@@ -22,10 +22,13 @@ const AlertStyles = styled.div`
 
 const AlertMessage = ({ alert }) => {
   if (!alert || !alert.msg) return null;
+  // console.log('This is an alert', alert);
   return (
     <AlertStyles>
       <p className={`alert alert-${alert.alertType}`}>
-        <strong>Validation Error:</strong>
+        <strong>
+          {alert.msg === 'Invalid credentials' ? 'Validation Error :' : ''}
+        </strong>
         {alert.msg.replace('MongoDB error: ', '')}
       </p>
     </AlertStyles>

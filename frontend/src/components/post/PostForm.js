@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import StyledForm from '../../styles/FormStyles';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { addPost } from '../../actions/postActions';
@@ -15,7 +16,7 @@ const PostForm = ({ addPost }) => {
       <div className="bg-primary p">
         <h3>Say Something...</h3>
       </div>
-      <form className="form my-1" onSubmit={createPost}>
+      <StyledForm className="form my-1" onSubmit={createPost}>
         <textarea
           name="text"
           cols="30"
@@ -26,7 +27,7 @@ const PostForm = ({ addPost }) => {
           required
         />
         <input type="submit" className="btn btn-dark my-1" value="Submit" />
-      </form>
+      </StyledForm>
     </div>
   );
 };
