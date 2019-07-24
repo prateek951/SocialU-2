@@ -67,7 +67,7 @@ export default (state = INITIAL_STATE, { type, payload }) => {
         ...state,
         post: {
           ...state.post,
-          comments: state.posts.comments.filter(
+          comments: state.post.comments.filter(
             comment => comment._id !== payload
           )
         },

@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -24,15 +24,13 @@ const CommentItem = ({
           Posted on <Moment format="YYYY/MM/DD">{date}</Moment>
         </p>
         {!auth.loading && user === auth.user._id && (
-          <Fragment>
-            <button
-              onClick={() => deleteComment(postId, _id)}
-              type="button"
-              className="btn btn-danger"
-            >
-              <i className="fas fa-times" />
-            </button>
-          </Fragment>
+          <button
+            type="button"
+            onClick={() => deleteComment(postId, _id)}
+            className="btn btn-danger"
+          >
+            <i className="fas fa-times" />
+          </button>
         )}
       </div>
     </div>
