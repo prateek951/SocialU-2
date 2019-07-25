@@ -1,0 +1,6 @@
+{
+  "MONGO_URI": "mongodb+srv://prateek951:prateek951@social-3jbtm.mongodb.net/test?retryWrites=true&w=majority",
+  "JWT_SECRET": "prateek951",
+  "GITHUB_CLIENT_ID": "c0ddb2f577c006cb300a",
+  "GITHUB_CLIENT_SECRET": "474231383cf90af7166f3f71239edc524513b15f"
+}
